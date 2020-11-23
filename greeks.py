@@ -3,6 +3,7 @@ import pandas as pd
 import scipy
 import mibian
 import time
+import math
 from pycoingecko import CoinGeckoAPI
 from web3 import Web3
 
@@ -102,7 +103,7 @@ while(address != 'Q'):
     
     cg = CoinGeckoAPI()
     wbtc_underlying_price = cg.get_price(ids='bitcoin', vs_currencies='usd')['bitcoin']['usd']
-    wbtc_volatility = wbtc_contract.functions.impliedVolRate().call() / 100
+    wbtc_volatility = math.sqrt(wbtc_contract.functions.impliedVolRate().call())
     wbtc_interest_rate = 0
     wbtc_strike = wbtc.strike
     wbtc_days_to_expiry = wbtc.days_to_expiry
@@ -129,7 +130,7 @@ while(address != 'Q'):
     eth['delta'] = 0
     
     eth_underlying_price = cg.get_price(ids='ethereum', vs_currencies='usd')['ethereum']['usd']
-    eth_volatility = eth_contract.functions.impliedVolRate().call() / 100
+    eth_volatility = math.sqrt(eth_contract.functions.impliedVolRate().call())
     eth_interest_rate = 0
     eth_strike = eth.strike
     eth_days_to_expiry = eth.days_to_expiry
